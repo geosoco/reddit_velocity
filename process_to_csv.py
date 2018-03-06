@@ -22,6 +22,7 @@ import json
 #
 #
 parser = argparse.ArgumentParser(description='user info dumper')
+#parser.add_argument('subreddit', help='subreddit name')
 parser.add_argument('input_path', help='directory to scan')
 parser.add_argument('output_filename', help='filename of csv to save')
 args = parser.parse_args()
@@ -48,8 +49,8 @@ for s in scrapes:
     files = glob.glob(os.path.join(args.input_path, s, "*.json"))
     for filename in files:
         basename = os.path.basename(filename)
-        matches = filename_re.match(basename)
-        dt = datetime.strptime(matches.group(2), "%Y-%d-%m_%H%M%S")
+        date_str = filename[(len(args.subreddit)+1):]
+        dt = datetime.strptime(date_str, "%Y-%m-%d_%H%M%S")
 
         with open(filename) as f:
             for idx, line in enumerate(f):
